@@ -12,20 +12,7 @@ const houseShiftingRoutes = require("./src/routes/houseShiftingRoutes");
 const officeShiftingRoutes = require("./src/routes/officeShiftingRoutes");
 const domesticShiftRoutes=require("./src/routes/domesticShiftRoutes")
 const paymentRoutes = require("./src/routes/paymentroutes");
-// const Razorpay = require("razorpay");
 
-// const razorpayInstance = new Razorpay({
-//     key_id: process.env.RZP_KEY_ID, // ✅ Correct key name
-//     key_secret: process.env.RZP_KEY_SECRET,
-//   });
-
-// const paymentRoutes = require("./src/routes/paymentroutes");
-// const Razorpay = require("razorpay");
-
-// const razorpay = new Razorpay({
-//   key_id: process.env.RAZORPAY_KEY_ID,
-//   key_secret: process.env.RAZORPAY_KEY_SECRET,
-// });
 
 
 const app=express()
@@ -63,7 +50,6 @@ app.use((req, res, next) => {
     next();
   });
   
-// app.use("/api/vehicles", vehicleRoutes);
 
 
 
