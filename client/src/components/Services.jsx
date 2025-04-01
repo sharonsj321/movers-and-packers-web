@@ -10,7 +10,7 @@ const services = [
     id: 1,
     name: "Domestic Shifting",
     description: "Shift hassle-free within the city.",
-    link: "/domestic-shift",
+    link: "/services/domestic-shift",
     imgUrl:
     "https://5.imimg.com/data5/SELLER/Default/2023/11/362972309/DG/SP/EU/189025172/domestic-shifting-services-500x500.jpg",
   },
@@ -18,7 +18,7 @@ const services = [
     id: 2,
     name: "Car Shifting",
     description: "Safe and secure car relocation.",
-    link: "/car-shift",
+    link: "/services/car-shift",
     imgUrl:
     "https://www.agarwalpackers.com/media/images/cache/agarwal_packers_car_moving_png_0_0_cover_70.jpg",
   },
@@ -26,14 +26,14 @@ const services = [
     id: 3,
     name: "House Shifting",
     description: "Relocate your home easily.",
-    link: "/house-shift",
+    link: "/services/house-shift",
     imgUrl:
 "https://www.thetransporter.in/img/main/house-4.jpg",  },
   {
     id: 4,
     name: "Office Shifting",
     description: "Efficient office relocations.",
-    link: "/office-shift",
+    link: "/services/office-shift",
     imgUrl:
 "https://jjmetro.com/wp-content/uploads/2013/01/Orlando-office-moving.jpg",  },
 ];

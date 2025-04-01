@@ -18,6 +18,7 @@ import ManageUsers from "./components/ManageUsers";
 import AdminBookings from "./components/AdminBookings";
 import AdminUsers from "./components/AdminUsers";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Signup from "./components/Signup";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -72,6 +73,8 @@ function App() {
         {isAuthenticated && <CustomNavbar user={user} onLogout={handleLogout} />}
 
         <Routes>
+        <Route path="/register" element={<Signup />} /> {/* Ensure this route exists */}
+
           {/* 🔐 Admin Routes */}
           <Route
             path="/admin/dashboard"

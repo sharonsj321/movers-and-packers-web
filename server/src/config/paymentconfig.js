@@ -1,6 +1,6 @@
-require("dotenv").config();
+// require("dotenv").config();
 
-module.exports = {
-  razorpayKeyId: process.env.RAZORPAY_KEY_ID,
-  razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET,
-};
+// module.exports = {
+//   razorpayKeyId: process.env.RAZORPAY_KEY_ID,
+//   razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET,
+// };

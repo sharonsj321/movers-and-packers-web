@@ -126,3 +126,39 @@ exports.signin = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+const signup = async (req, res) => {
+  const { name, email, password, role = "customer" } = req.body; // Default role is 'user'
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    const newUser = new User({
+      name,
+      email,
+      password: bcrypt.hashSync(password, 10),
+      role, // Assigning the correct role
+    });
+
+    await newUser.save();
+
+    // Generate token
+    const token = jwt.sign({ userId: newUser._id, role: newUser.role }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+
+    res.status(201).json({
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role, // Ensure the role is returned here
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};

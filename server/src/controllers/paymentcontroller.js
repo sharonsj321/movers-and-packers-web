@@ -1,10 +1,10 @@
-const Razorpay = require("razorpay");
+// const Razorpay = require("razorpay");
 const Booking = require("../models/bookingModel");
 
-const razorpayInstance = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+// const razorpayInstance = new Razorpay({
+//   key_id: process.env.RAZORPAY_KEY_ID,
+//   key_secret: process.env.RAZORPAY_KEY_SECRET,
+// });
 
 // ✅ Create Order
 exports.createOrder = async (req, res) => {
@@ -18,11 +18,11 @@ exports.createOrder = async (req, res) => {
     }
 
     // Create Razorpay order
-    const options = {
-      amount: booking.amount * 100, // amount in paise
-      currency: "INR",
-      receipt: `receipt_${bookingId}`,
-    };
+    // const options = {
+    //   amount: booking.amount * 100, // amount in paise
+    //   currency: "INR",
+    //   receipt: `receipt_${bookingId}`,
+    // };
 
     const order = await razorpayInstance.orders.create(options);
 
