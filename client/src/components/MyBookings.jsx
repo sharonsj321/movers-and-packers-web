@@ -44,7 +44,7 @@ const MyBookings = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:7000/api/payments/create-order",
+        "https://movers-and-packers-webfrontend.vercel.app/api/payments/create-order",
         {
           method: "POST",
           headers: {
@@ -94,7 +94,7 @@ const MyBookings = () => {
   const updateBookingStatus = async (bookingId) => {
     const token = localStorage.getItem("token");
     await fetch(
-      `http://localhost:7000/api/bookings/${bookingId}/update-status`,
+      `https://movers-and-packers-webfrontend.vercel.app/api/bookings/${bookingId}/update-status`,
       {
         method: "PUT",
         headers: {
@@ -111,7 +111,7 @@ const MyBookings = () => {
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:7000/api/bookings", {
+        const response = await fetch("https://movers-and-packers-webfrontend.vercel.app/api/bookings", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

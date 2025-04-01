@@ -1,5 +1,5 @@
 // const Razorpay = require("razorpay");
-const Booking = require("../models/bookingModel");
+const Booking = require("../models/bookingmodel");
 
 // const razorpayInstance = new Razorpay({
 //   key_id: process.env.RAZORPAY_KEY_ID,

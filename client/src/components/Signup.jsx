@@ -30,7 +30,7 @@ const Signup = () => {
     try {
       // Make request to signup endpoint, not login
       const response = await axios.post(
-        "http://localhost:7000/api/auth/signup", // Use the correct signup route
+        "https://movers-and-packers-webfrontend.vercel.app/api/auth/signup", // Use the correct signup route
         formData
       );
       console.log("Response:", response.data);  // Add this log to check the response

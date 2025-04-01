@@ -62,7 +62,7 @@ const OfficeShift = () => {
 
       // ✅ Send POST request to create booking
       const response = await axios.post(
-        "http://localhost:7000/api/bookings",
+        "https://movers-and-packers-webfrontend.vercel.app/api/bookings",
         {
           serviceId: OFFICE_SHIFT_SERVICE_ID, // ✅ Use correct service ID
           ...formData,

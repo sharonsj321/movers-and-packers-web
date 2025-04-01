@@ -22,7 +22,7 @@ const MyProfile = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:7000/api/users/profile", {
+        const response = await axios.get("https://movers-and-packers-webfrontend.vercel.app/api/users/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -63,7 +63,7 @@ const MyProfile = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:7000/api/users/profile",
+        "https://movers-and-packers-webfrontend.vercel.app/api/users/profile",
         formData,
         {
           headers: {

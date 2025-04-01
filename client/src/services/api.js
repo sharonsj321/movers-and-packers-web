@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:7000/api/domestic";
+const API_URL = "https://movers-and-packers-webfrontend.vercel.app/api/domestic";
 
 export const createDomesticShifting = async (data) =>
   await axios.post(API_URL, data);

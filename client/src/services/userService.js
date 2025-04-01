@@ -1,7 +1,7 @@
 // src/services/userService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:7000/api/admin/users";
+const API_URL = "https://movers-and-packers-webfrontend.vercel.app/api/admin/users";
 
 // ✅ Fetch All Users
 export const getAllUsers = async (token) => {

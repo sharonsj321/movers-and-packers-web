@@ -18,7 +18,7 @@ const ManageServices = () => {
   // ✅ Fetch all services
   const fetchServices = async () => {
     try {
-      const response = await axios.get("http://localhost:7000/api/services");
+      const response = await axios.get("https://movers-and-packers-webfrontend.vercel.app/api/services");
       console.log("API Response:", response.data); // ✅ Debug to verify response structure
 
       // Check if response.data contains services array
@@ -46,13 +46,13 @@ const ManageServices = () => {
       if (serviceData._id) {
         // ✅ Update existing service
         await axios.put(
-          `http://localhost:7000/api/admin/services/${serviceData._id}`,
+          `https://movers-and-packers-webfrontend.vercel.app/api/admin/services/${serviceData._id}`,
           serviceData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
         // ✅ Create new service
-        await axios.post("http://localhost:7000/api/admin/services", serviceData, {
+        await axios.post("https://movers-and-packers-webfrontend.vercel.app/api/admin/services", serviceData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
@@ -70,7 +70,7 @@ const ManageServices = () => {
     if (window.confirm("Are you sure you want to delete this service?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:7000/api/admin/services/${id}`, {
+        await axios.delete(`https://movers-and-packers-webfrontend.vercel.app/api/admin/services/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchServices();

@@ -16,7 +16,7 @@ const ManageUsers = () => {
       const token = localStorage.getItem("token");
       console.log("Token being sent:", token); // ✅ Debugging
 
-      const response = await axios.get("http://localhost:7000/api/admin/users", {
+      const response = await axios.get("https://movers-and-packers-webfrontend.vercel.app/api/admin/users", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +41,7 @@ const ManageUsers = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:7000/api/admin/users/${id}`, {
+        await axios.delete(`https://movers-and-packers-webfrontend.vercel.app/api/admin/users/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
