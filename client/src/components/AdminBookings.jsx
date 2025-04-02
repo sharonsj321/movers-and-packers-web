@@ -22,7 +22,7 @@ const AdminBookings = () => {
       }
 
       const response = await axios.get(
-        "http://localhost:7000/api/admin/bookings",
+        "https://movers-and-packers-webfrontend.vercel.app/api/admin/bookings",
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -33,7 +33,7 @@ const DomesticShiftBooking = () => {
   // ✅ Create Booking API Call
   const createDomesticShiftBooking = async (formData, token) => {
     const response = await axios.post(
-      "http://localhost:7000/api/bookings",
+      "https://movers-and-packers-webfrontend.vercel.app/api/bookings",
       formData,
       {
         headers: {

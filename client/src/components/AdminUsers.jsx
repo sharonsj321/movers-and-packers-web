@@ -23,7 +23,7 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token"); // Get admin token
-      const response = await axios.get("http://localhost:7000/api/admin/users", {
+      const response = await axios.get("https://movers-and-packers-webfrontend.vercel.app/api/admin/users", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -62,7 +62,7 @@ const AdminUsers = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:7000/api/admin/users/${currentUser._id}`,
+        `https://movers-and-packers-webfrontend.vercel.app/api/admin/users/${currentUser._id}`,
         updatedData,
         {
           headers: {
@@ -87,7 +87,7 @@ const AdminUsers = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.delete(
-          `http://localhost:7000/api/admin/users/${userId}`,
+          `https://movers-and-packers-webfrontend.vercel.app/api/admin/users/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

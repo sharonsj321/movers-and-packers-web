@@ -58,7 +58,7 @@ const CarShift = () => {
 
       // ✅ Send POST request to create booking
       const response = await axios.post(
-        "http://localhost:7000/api/bookings",
+        "https://movers-and-packers-webfrontend.vercel.app/api/bookings",
         {
           serviceId: CAR_SHIFT_SERVICE_ID, // ✅ Correct Car Shifting serviceId
           ...formData,
