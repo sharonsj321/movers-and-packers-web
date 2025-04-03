@@ -23,11 +23,22 @@ const Login = ({ onLogin }) => {
   // ✅ Handle login submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Reset error before making request
+
+    console.log("📤 Sending Login Request:", {
+      API_BASE_URL,
+      email: formData.email,
+      password: formData.password,
+    });
+    
     try {
       const response = await axios.post(
         `${API_BASE_URL}/auth/login`,
         formData
       );
+
+      console.log("✅ Login Response:", response.data);
+
 
       // ✅ Correctly destructure token and user
       const { token, user } = response.data;
