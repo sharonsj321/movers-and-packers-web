@@ -24,10 +24,15 @@ app.get('/',(req,res)=>{
 
 app.use(express.json());
 app.use(cors({
-    origin:  "https://movers-and-packers-webfrontend.vercel.app",
+    origin:  ["https://movers-and-packers-webfrontend.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }));
+
+  app.post("/api/auth/login", (req, res) => {
+    res.json({ message: "Login successful" });
+  });
+  
   app.get("/",(req,res)=>{res.send("welcome")})
 
 app.use("/api/users", userRoutes); // Add user routes
