@@ -27,32 +27,29 @@ const Signup = () => {
   // ✅ Handle signup submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);  // Add this log to check form data
-
+    console.log("Form Data:", formData); // Debugging
+  
     try {
-      // Make request to signup endpoint, not login
-      const response = await axios.post
-        (`${API_URL}/api/auth/signup`, // Use the correct signup route
-        formData
-      );
-      console.log("Response:", response.data);  // Add this log to check the response
-
-      // Assuming the response has success or a message
+      // ✅ Fix: Remove extra `/api`
+      const response = await axios.post(`${API_URL}/auth/signup`, formData);
+  
+      console.log("Response:", response.data); // Debugging
+  
       if (response.data.success) {
-        setSuccess("Account created successfully! Please login.");
-
-        // After successful signup, redirect to login page
+        setSuccess("🎉 Account created successfully! Redirecting to login...");
+        setError("");
+  
+        // ✅ Redirect to login after 2 seconds
         setTimeout(() => {
-          navigate("/login"); // Redirect to login page
+          navigate("/login");
         }, 2000);
       }
     } catch (error) {
-        console.error("Error:", error.response);  // Log the response from the backend
-
-      setError(error.response?.data?.message || "Failed to sign up.");
+      console.error("❌ Error:", error.response?.data || error);
+      setError(error.response?.data?.message || "❌ Failed to sign up.");
     }
   };
-
+  
   return (
     <Container className="d-flex justify-content-center align-items-center min-vh-100">
       <Card className="shadow-lg p-4 rounded-lg" style={{ width: "400px" }}>
