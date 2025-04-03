@@ -1,38 +1,36 @@
 require("dotenv").config();
-const cors = require("cors");
 const express = require("express");
+const cors = require("cors");
 const connectDb = require("./src/config/Db");
 
+// ✅ Initialize Express App
 const app = express();
 connectDb();
 
+// ✅ Correct CORS Setup
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // Frontend in development mode
-      "https://movers-and-packers-webfrontend.vercel.app", // Frontend in production
+      "http://localhost:5173",  // Development frontend
+      "https://movers-and-packers-webfrontend.vercel.app", // Deployed frontend
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // ✅ Allow credentials (cookies, authorization headers)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true, // ✅ Allow credentials (important for authentication)
   })
 );
 
-// ✅ Allow preflight requests
+// ✅ Ensure Preflight Requests Pass
 app.options("*", cors());
 
 // ✅ Middleware to parse JSON requests
 app.use(express.json());
-
-app.use((req, res, next) => {
-  console.log(`Incoming Request: ${req.method} ${req.url}`);
-  next();
-});
 
 // ✅ Test Route
 app.get("/", (req, res) => {
   res.send("Hello World - Backend is Working!");
 });
 
+// ✅ Import Routes
 const authRoutes = require("./src/routes/authroutes");
 const adminRoutes = require("./src/routes/adminroutes");
 const serviceRoutes = require("./src/routes/serviceRoutes");
@@ -44,9 +42,7 @@ const officeShiftingRoutes = require("./src/routes/officeShiftingRoutes");
 const domesticShiftRoutes = require("./src/routes/domesticShiftRoutes");
 const paymentRoutes = require("./src/routes/paymentroutes");
 
-
-
-// ✅ Routes
+// ✅ Attach Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/users", userRoutes);
