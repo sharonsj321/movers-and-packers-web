@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
                 email: user.email,
                 role: user.role
             },
-            process.env.JWT_SECRET,  // Fix: "JWT_Secret" should be "JWT_SECRET"
+            process.env.JWT_Secret,  // Fix: "JWT_Secret" should be "JWT_SECRET"
             { expiresIn: "30d" }
         );
 
@@ -119,7 +119,7 @@ exports.signin = async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: "Invalid email or password" });
 
         // Generate JWT Token
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_Secret, { expiresIn: "1h" });
 
         res.status(200).json({ message: "Login successful", token });
     } catch (error) {
@@ -145,7 +145,7 @@ const signup = async (req, res) => {
     await newUser.save();
 
     // Generate token
-    const token = jwt.sign({ userId: newUser._id, role: newUser.role }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: newUser._id, role: newUser.role }, process.env.JWT_Secret, {
       expiresIn: '1h',
     });
 
