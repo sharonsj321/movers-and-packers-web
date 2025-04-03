@@ -3,21 +3,9 @@ const cors = require("cors");
 const express = require("express");
 const connectDb = require("./src/config/Db");
 
-const authRoutes = require("./src/routes/authroutes");
-const adminRoutes = require("./src/routes/adminroutes");
-const serviceRoutes = require("./src/routes/serviceRoutes");
-const userRoutes = require("./src/routes/userRoutes");
-const bookingRoutes = require("./src/routes/bookingroutes");
-const carShiftingRoutes = require("./src/routes/carShiftingRoutes");
-const houseShiftingRoutes = require("./src/routes/houseShiftingRoutes");
-const officeShiftingRoutes = require("./src/routes/officeShiftingRoutes");
-const domesticShiftRoutes = require("./src/routes/domesticShiftRoutes");
-const paymentRoutes = require("./src/routes/paymentroutes");
-
 const app = express();
 connectDb();
 
-// ✅ Correct CORS Configuration
 app.use(
   cors({
     origin: [
@@ -35,9 +23,8 @@ app.options("*", cors());
 // ✅ Middleware to parse JSON requests
 app.use(express.json());
 
-// ✅ Logging middleware for debugging
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
+  console.log(`Incoming Request: ${req.method} ${req.url}`);
   next();
 });
 
@@ -45,6 +32,19 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.send("Hello World - Backend is Working!");
 });
+
+const authRoutes = require("./src/routes/authroutes");
+const adminRoutes = require("./src/routes/adminroutes");
+const serviceRoutes = require("./src/routes/serviceRoutes");
+const userRoutes = require("./src/routes/userRoutes");
+const bookingRoutes = require("./src/routes/bookingroutes");
+const carShiftingRoutes = require("./src/routes/carShiftingRoutes");
+const houseShiftingRoutes = require("./src/routes/houseShiftingRoutes");
+const officeShiftingRoutes = require("./src/routes/officeShiftingRoutes");
+const domesticShiftRoutes = require("./src/routes/domesticShiftRoutes");
+const paymentRoutes = require("./src/routes/paymentroutes");
+
+
 
 // ✅ Routes
 app.use("/api/auth", authRoutes);
