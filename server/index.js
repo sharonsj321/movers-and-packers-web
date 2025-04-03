@@ -24,7 +24,7 @@ app.get('/',(req,res)=>{
 
 app.use(express.json());
 app.use(cors({
-    origin: [ "https://movers-and-packers-webfrontend.vercel.app","http://localhost:5173"], 
+    origin:  "https://movers-and-packers-webfrontend.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }));
