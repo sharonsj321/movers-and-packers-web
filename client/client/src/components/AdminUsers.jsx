@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Spinner, Alert, Button, Modal, Form } from "react-bootstrap";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import from VITE env
+
 // ✅ Correctly initialize users as an empty array
 const AdminUsers = () => {
   const [users, setUsers] = useState([]); // ✅ Array for users
@@ -23,7 +25,7 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token"); // Get admin token
-      const response = await axios.get("http://localhost:7000/api/admin/users", {
+      const response = await axios.get(`${API_BASE_URL}/admin/users`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -62,7 +64,7 @@ const AdminUsers = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:7000/api/admin/users/${currentUser._id}`,
+        `${API_BASE_URL}/admin/users/${currentUser._id}`,
         updatedData,
         {
           headers: {
@@ -86,8 +88,8 @@ const AdminUsers = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.delete(
-          `http://localhost:7000/api/admin/users/${userId}`,
+        const response = await axios.delete
+          (`${API_BASE_URL}/admin/users/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

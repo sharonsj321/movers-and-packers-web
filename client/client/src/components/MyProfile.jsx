@@ -12,6 +12,8 @@ const MyProfile = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true); // ✅ Added loading state
 
+  const API_URL = import.meta.env.VITE_API_URL; // ✅ Get API URL from env
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -22,7 +24,7 @@ const MyProfile = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:7000/api/users/profile", {
+        const response = await axios.get(`${API_URL}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -63,7 +65,7 @@ const MyProfile = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:7000/api/users/profile",
+        `${API_URL}/api/users/profile`,
         formData,
         {
           headers: {

@@ -11,6 +11,8 @@ const OfficeShift = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  const API_URL = import.meta.env.VITE_API_URL; // ✅ Use environment variable
+
   // ✅ Correct Service ID for Office Shifting (Replace with actual ID from DB)
   const OFFICE_SHIFT_SERVICE_ID = "67e60f28645e5aaff3a7e64b"; // ⚠️ Replace with real ID
 
@@ -62,7 +64,7 @@ const OfficeShift = () => {
 
       // ✅ Send POST request to create booking
       const response = await axios.post(
-        "http://localhost:7000/api/bookings",
+        `${API_URL}/api/bookings`,
         {
           serviceId: OFFICE_SHIFT_SERVICE_ID, // ✅ Use correct service ID
           ...formData,

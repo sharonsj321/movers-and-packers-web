@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container, Table, Button, Form, Modal } from "react-bootstrap";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
+
 const ManageServices = () => {
   const [services, setServices] = useState([]);
   const [show, setShow] = useState(false);
@@ -18,7 +20,7 @@ const ManageServices = () => {
   // ✅ Fetch all services
   const fetchServices = async () => {
     try {
-      const response = await axios.get("http://localhost:7000/api/services");
+      const response = await axios.get(`${API_BASE_URL}/services`);
       console.log("API Response:", response.data); // ✅ Debug to verify response structure
 
       // Check if response.data contains services array
@@ -46,13 +48,13 @@ const ManageServices = () => {
       if (serviceData._id) {
         // ✅ Update existing service
         await axios.put(
-          `http://localhost:7000/api/admin/services/${serviceData._id}`,
+          `${API_BASE_URL}/admin/services/${serviceData._id}`,
           serviceData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
         // ✅ Create new service
-        await axios.post("http://localhost:7000/api/admin/services", serviceData, {
+        await axios.post(`${API_BASE_URL}/admin/services`, serviceData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
@@ -70,7 +72,7 @@ const ManageServices = () => {
     if (window.confirm("Are you sure you want to delete this service?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:7000/api/admin/services/${id}`, {
+        await axios.delete(`${API_BASE_URL}/admin/services/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchServices();

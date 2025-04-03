@@ -3,6 +3,8 @@ import axios from "axios";
 import { Form, Button, Alert, Container, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
+
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -23,7 +25,7 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:7000/api/auth/login",
+        `${API_BASE_URL}/auth/login`,
         formData
       );
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
 
 const DomesticShiftBooking = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,7 @@ const DomesticShiftBooking = () => {
   // ✅ Create Booking API Call
   const createDomesticShiftBooking = async (formData, token) => {
     const response = await axios.post(
-      "http://localhost:7000/api/bookings",
+      `${API_BASE_URL}/bookings`,
       formData,
       {
         headers: {
