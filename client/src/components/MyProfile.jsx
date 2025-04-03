@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Form, Button, Alert, Card, Spinner } from "react-bootstrap";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
+
 const MyProfile = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -22,7 +24,7 @@ const MyProfile = () => {
           return;
         }
 
-        const response = await axios.get("https://movers-and-packers-webfrontend.vercel.app/api/users/profile", {
+        const response = await axios.get(`${API_BASE_URL}/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -63,7 +65,7 @@ const MyProfile = () => {
       }
 
       const response = await axios.put(
-        "https://movers-and-packers-webfrontend.vercel.app/api/users/profile",
+        `${API_BASE_URL}/users/profile`, // ✅ Fixed API URL
         formData,
         {
           headers: {

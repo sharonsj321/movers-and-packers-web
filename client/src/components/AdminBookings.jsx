@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Spinner, Alert } from "react-bootstrap";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import from VITE env
+
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]); // ✅ Initialize as an empty array
   const [loading, setLoading] = useState(true); // ✅ Initial loading state
@@ -21,8 +23,7 @@ const AdminBookings = () => {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await axios.get(
-        "https://movers-and-packers-webfrontend.vercel.app/api/admin/bookings",
+      const response = await axios.get(`${API_BASE_URL}/admin/bookings`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

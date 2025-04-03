@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container, Table, Button } from "react-bootstrap";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
+
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -16,7 +18,7 @@ const ManageUsers = () => {
       const token = localStorage.getItem("token");
       console.log("Token being sent:", token); // ✅ Debugging
 
-      const response = await axios.get("https://movers-and-packers-webfrontend.vercel.app/api/admin/users", {
+      const response = await axios.get(`${API_BASE_URL}/admin/users`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +43,7 @@ const ManageUsers = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`https://movers-and-packers-webfrontend.vercel.app/api/admin/users/${id}`, {
+        await axios.delete(`${API_BASE_URL}/admin/users/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

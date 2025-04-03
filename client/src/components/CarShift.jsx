@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import from VITE env
+
 const CarShift = () => {
   const [formData, setFormData] = useState({
     address: "",
@@ -58,7 +60,7 @@ const CarShift = () => {
 
       // ✅ Send POST request to create booking
       const response = await axios.post(
-        "https://movers-and-packers-webfrontend.vercel.app/api/bookings",
+        `${API_BASE_URL}/bookings`,
         {
           serviceId: CAR_SHIFT_SERVICE_ID, // ✅ Correct Car Shifting serviceId
           ...formData,

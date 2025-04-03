@@ -1,7 +1,7 @@
 // src/services/userService.js
 import axios from "axios";
 
-const API_URL = "https://movers-and-packers-webfrontend.vercel.app/api/admin/users";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/admin/users`; // ✅ Use environment variable
 
 // ✅ Fetch All Users
 export const getAllUsers = async (token) => {

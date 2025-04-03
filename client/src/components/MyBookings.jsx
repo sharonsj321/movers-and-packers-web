@@ -12,6 +12,8 @@ import {
   Button,
 } from "react-bootstrap";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
+
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]); // All bookings
   const [filteredBookings, setFilteredBookings] = useState([]); // Filtered bookings
@@ -43,8 +45,8 @@ const MyBookings = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        "https://movers-and-packers-webfrontend.vercel.app/api/payments/create-order",
+      const response = await fetch
+        (`${API_BASE_URL}/payments/create-order`,
         {
           method: "POST",
           headers: {
@@ -93,8 +95,8 @@ const MyBookings = () => {
   // ✅ Update Booking Status After Successful Payment
   const updateBookingStatus = async (bookingId) => {
     const token = localStorage.getItem("token");
-    await fetch(
-      `https://movers-and-packers-webfrontend.vercel.app/api/bookings/${bookingId}/update-status`,
+    await fetch
+      (`${API_BASE_URL}/bookings/${bookingId}/update-status`,
       {
         method: "PUT",
         headers: {
@@ -111,7 +113,7 @@ const MyBookings = () => {
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("https://movers-and-packers-webfrontend.vercel.app/api/bookings", {
+        const response = await fetch(`${API_BASE_URL}/bookings`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

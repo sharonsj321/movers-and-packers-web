@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
+
+
 const DomesticShiftBooking = () => {
   const [formData, setFormData] = useState({
     serviceId: "67e60f28645e5aaff3a7e64b", // ✅ Correct service ID
@@ -33,7 +36,7 @@ const DomesticShiftBooking = () => {
   // ✅ Create Booking API Call
   const createDomesticShiftBooking = async (formData, token) => {
     const response = await axios.post(
-      "https://movers-and-packers-webfrontend.vercel.app/api/bookings",
+      `${API_BASE_URL}/bookings`,
       formData,
       {
         headers: {
