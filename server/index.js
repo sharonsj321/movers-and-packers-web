@@ -1,64 +1,55 @@
-require('dotenv').config()  //applistening
+require("dotenv").config();
 const cors = require("cors");
-const express=require('express')
-const connectDb=require('./src/config/Db')
-const authroutes=require('./src/routes/authroutes')
-const adminroutes=require('./src/routes/adminroutes')
+const express = require("express");
+const connectDb = require("./src/config/Db");
+
+const authRoutes = require("./src/routes/authroutes");
+const adminRoutes = require("./src/routes/adminroutes");
 const serviceRoutes = require("./src/routes/serviceRoutes");
-const userRoutes= require("./src/routes/userRoutes")
-const bookingRoutes=require("./src/routes/bookingroutes")
-const carShiftingRoutes = require("./src/routes/carShiftingRoutes"); // ✅ Correct route
+const userRoutes = require("./src/routes/userRoutes");
+const bookingRoutes = require("./src/routes/bookingroutes");
+const carShiftingRoutes = require("./src/routes/carShiftingRoutes");
 const houseShiftingRoutes = require("./src/routes/houseShiftingRoutes");
 const officeShiftingRoutes = require("./src/routes/officeShiftingRoutes");
-const domesticShiftRoutes=require("./src/routes/domesticShiftRoutes")
+const domesticShiftRoutes = require("./src/routes/domesticShiftRoutes");
 const paymentRoutes = require("./src/routes/paymentroutes");
 
+const app = express();
+connectDb();
 
-
-const app=express()
-
-const allowedOrigins = [
-  "https://movers-and-packers-webfrontend.vercel.app",
-];
-connectDb()
-
-app.get('/',(req,res)=>{
-    res.send("Hello World")
-})
-
-app.use(express.json());
+// ✅ Correct CORS Configuration
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true, // ✅ Allow cookies and headers
+    origin: [
+      "http://localhost:5173", // Frontend in development mode
+      "https://movers-and-packers-webfrontend.vercel.app", // Frontend in production
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // ✅ Allow credentials (cookies, authorization headers)
   })
 );
 
+// ✅ Allow preflight requests
 app.options("*", cors());
 
+// ✅ Middleware to parse JSON requests
+app.use(express.json());
 
-  app.post("/api/auth/login", (req, res) => {
-    res.json({ message: "Login successful" });
-  });
+// ✅ Logging middleware for debugging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
-  app.get("/",(req,res)=>{res.send("welcome")})
+// ✅ Test Route
+app.get("/", (req, res) => {
+  res.send("Hello World - Backend is Working!");
+});
 
-app.use("/api/users", userRoutes); // Add user routes
-
-
-app.use('/api/auth',authroutes)       //  /api/auth ennu vannal auth routine vilikan parayunnu
-app.use('/api/admin',adminroutes)
-
-// app.use("/api/payment", paymentRoutes);
-
-
-// Import and use service routes
+// ✅ Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/car-shifting", carShiftingRoutes);
@@ -67,22 +58,8 @@ app.use("/api/office-shifting", officeShiftingRoutes);
 app.use("/api/domestic-shift", domesticShiftRoutes);
 app.use("/api/payments", paymentRoutes);
 
-
-
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    next();
-  });
-  
-
-
-
-
-
-port=process.env.PORT
-console.log(port)
-
-app.listen(port,()=>{
-    console.log(`listening to the port ${port}`)
-    
-})
+// ✅ Start Server
+const PORT = process.env.PORT || 7000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
