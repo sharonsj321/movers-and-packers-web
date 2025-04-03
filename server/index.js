@@ -16,6 +16,10 @@ const paymentRoutes = require("./src/routes/paymentroutes");
 
 
 const app=express()
+
+const allowedOrigins = [
+  "https://movers-and-packers-webfrontend.vercel.app",
+];
 connectDb()
 
 app.get('/',(req,res)=>{
@@ -23,16 +27,26 @@ app.get('/',(req,res)=>{
 })
 
 app.use(express.json());
-app.use(cors({
-    origin:  ["https://movers-and-packers-webfrontend.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  }));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // ✅ Allow cookies and headers
+  })
+);
+
+app.options("*", cors());
+
 
   app.post("/api/auth/login", (req, res) => {
     res.json({ message: "Login successful" });
   });
-  
+
   app.get("/",(req,res)=>{res.send("welcome")})
 
 app.use("/api/users", userRoutes); // Add user routes
