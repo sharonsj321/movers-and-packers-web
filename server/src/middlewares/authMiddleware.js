@@ -21,7 +21,7 @@ const verifyToken = async (req, res, next) => {
     console.log("✅ Token from header:", token);
 
     // ✅ Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_Secret);
     console.log("✅ Decoded Token:", decoded);
 
     // ✅ Find user from token payload

@@ -12,7 +12,7 @@ router.post("/signin", signin);
 
 const generateAuthToken = (user) => {
     const payload = { id: user._id, email: user.email, role: user.role };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(payload, process.env.JWT_Secret, { expiresIn: '1h' });
     return token;
   };
 router.post('/signup', async (req, res) => {
