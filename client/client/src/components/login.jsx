@@ -3,52 +3,40 @@ import axios from "axios";
 import { Form, Button, Alert, Container, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const Login = ({ onLogin }) => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
-  // Handle input change
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Handle login submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // clear previous errors
+
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/login`,
-        formData
-      );
+      const { data } = await axios.post(`${API_BASE_URL}/auth/login`, formData);
+      const { token, user } = data;
 
-      // ✅ Correctly destructure token and user
-      const { token, user } = response.data;
       if (token && user) {
-        console.log("Token:", token);
-        console.log("User:", user);
-
-        // ✅ Store token in localStorage
+        // Store token & user
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        // ✅ Set authorization header globally
+        // Set auth header
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-        // ✅ Call onLogin with correct params
+        // Notify parent
         onLogin(user, token);
       } else {
-        setError("Invalid credentials. Please try again.");
+        setError("Invalid login response.");
       }
-    } catch (error) {
-      setError(error.response?.data?.message || "Failed to login.");
+    } catch (err) {
+      const msg = err.response?.data?.message || "Login failed. Please try again.";
+      setError(msg);
     }
   };
 
@@ -58,10 +46,8 @@ const Login = ({ onLogin }) => {
         <Card.Body>
           <h2 className="text-center mb-4 fw-bold">🔐 Login</h2>
 
-          {/* Error Alert */}
           {error && <Alert variant="danger">{error}</Alert>}
 
-          {/* Login Form */}
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="email" className="mb-3">
               <Form.Label>Email Address</Form.Label>
@@ -89,16 +75,11 @@ const Login = ({ onLogin }) => {
               />
             </Form.Group>
 
-            <Button
-              variant="primary"
-              type="submit"
-              className="w-100 rounded-pill mb-3"
-            >
+            <Button variant="primary" type="submit" className="w-100 rounded-pill mb-3">
               Login
             </Button>
           </Form>
 
-          {/* Forgot Password & Signup Links */}
           <div className="text-center mt-3">
             <Link to="/forgot-password" className="text-decoration-none">
               Forgot Password?

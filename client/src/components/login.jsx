@@ -23,45 +23,33 @@ const Login = ({ onLogin }) => {
   // ✅ Handle login submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error before making request
-
-    console.log("📤 Sending Login Request:", {
-      API_BASE_URL,
-      email: formData.email,
-      password: formData.password,
-    });
-    
+    setError("");
+  
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/login`,
-        formData
-      );
-
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, formData);
+  
       console.log("✅ Login Response:", response.data);
-
-
-      // ✅ Correctly destructure token and user
+  
       const { token, user } = response.data;
+  
       if (token && user) {
-        console.log("Token:", token);
-        console.log("User:", user);
-
-        // ✅ Store token in localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
-
-        // ✅ Set authorization header globally
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-        // ✅ Call onLogin with correct params
         onLogin(user, token);
       } else {
-        setError("Invalid credentials. Please try again.");
+        setError(error.response?.data?.message || "Failed to login.");
       }
-    } catch (error) {
-      setError(error.response?.data?.message || "Failed to login.");
-    }
+    }catch (err) {
+        console.error("Login Error:", err);
+        const message =
+          err.response?.data?.message ||
+          err.message ||
+          "An unexpected error occurred.";
+        setError(message);
+      }
   };
+  
 
   return (
     <Container className="d-flex justify-content-center align-items-center min-vh-100">

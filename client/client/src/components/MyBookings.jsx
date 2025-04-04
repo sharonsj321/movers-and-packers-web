@@ -12,19 +12,15 @@ import {
   Button,
 } from "react-bootstrap";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL; // ✅ Import API URL from .env
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const MyBookings = () => {
-  const [bookings, setBookings] = useState([]); // All bookings
-  const [filteredBookings, setFilteredBookings] = useState([]); // Filtered bookings
+  const [bookings, setBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState({
-    status: "",
-    search: "",
-  });
+  const [filter, setFilter] = useState({ status: "", search: "" });
 
-  // ✅ Load Razorpay Script
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -35,7 +31,6 @@ const MyBookings = () => {
     });
   };
 
-  // ✅ Handle Payment Initialization
   const handlePayment = async (bookingId, amount) => {
     const isLoaded = await loadRazorpayScript();
     if (!isLoaded) {
@@ -45,17 +40,14 @@ const MyBookings = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch
-        (`${API_BASE_URL}/payments/create-order`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ bookingId,amount }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/payments/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ bookingId, amount }),
+      });
 
       const data = await response.json();
       if (!data.success) {
@@ -65,23 +57,27 @@ const MyBookings = () => {
 
       const options = {
         key: data.key,
-        amount: data.amount * 100, // Razorpay expects amount in paise
+        amount: data.amount * 100,
         currency: "INR",
         name: "Movers and Packers",
         description: "Booking Payment",
         order_id: data.orderId,
-        handler: async function (response) {
-          await updateBookingStatus(bookingId);
-          alert("✅ Payment successful!");
+        handler: async (response) => {
+          try {
+            await updateBookingStatus(bookingId);
+            alert("✅ Payment successful!");
+            // Refresh bookings
+            fetchBookings();
+          } catch (err) {
+            alert("Payment succeeded, but failed to update booking status.");
+          }
         },
         prefill: {
           name: "Customer",
           email: "customer@example.com",
           contact: "9876543210",
         },
-        theme: {
-          color: "#0d6efd",
-        },
+        theme: { color: "#0d6efd" },
       };
 
       const paymentObject = new window.Razorpay(options);
@@ -92,80 +88,73 @@ const MyBookings = () => {
     }
   };
 
-  // ✅ Update Booking Status After Successful Payment
   const updateBookingStatus = async (bookingId) => {
     const token = localStorage.getItem("token");
-    await fetch
-      (`${API_BASE_URL}/bookings/${bookingId}/update-status`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status: "Completed" }),
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/update-status`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status: "Completed" }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update booking status");
+    }
   };
 
-  // ✅ Fetch Bookings from Backend
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(`${API_BASE_URL}/bookings`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const fetchBookings = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/bookings`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch bookings");
-        }
-
-        const data = await response.json();
-        setBookings(data.bookings);
-        setFilteredBookings(data.bookings); // ✅ Set filtered data initially
-      } catch (error) {
-        console.error("Error fetching bookings:", error.message);
-        setError(error.message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error("Failed to fetch bookings");
       }
-    };
 
+      const data = await response.json();
+      setBookings(data.bookings || []);
+      setFilteredBookings(data.bookings || []);
+    } catch (error) {
+      console.error("Error fetching bookings:", error.message);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchBookings();
   }, []);
 
-  // ✅ Handle Filter Change
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilter({ ...filter, [name]: value });
   };
 
-  // ✅ Apply Filters to Bookings
   useEffect(() => {
     let filtered = bookings;
 
-    // Filter by status
     if (filter.status) {
       filtered = filtered.filter((booking) => booking.status === filter.status);
     }
 
-    // Filter by service name search
     if (filter.search) {
       filtered = filtered.filter((booking) =>
-        booking.service?.title
-          ?.toLowerCase()
-          .includes(filter.search.toLowerCase())
+        booking.service?.title?.toLowerCase().includes(filter.search.toLowerCase())
       );
     }
 
     setFilteredBookings(filtered);
   }, [filter, bookings]);
 
-  // ✅ Loading State
   if (loading) {
     return (
       <Container className="text-center mt-5">
@@ -175,7 +164,6 @@ const MyBookings = () => {
     );
   }
 
-  // ❌ Error State
   if (error) {
     return (
       <Container className="mt-5">
@@ -186,8 +174,7 @@ const MyBookings = () => {
     );
   }
 
-  // 📚 No Bookings Available
-  if (!filteredBookings || filteredBookings.length === 0) {
+  if (!filteredBookings.length) {
     return (
       <Container className="mt-5 text-center">
         <Alert variant="info">📚 No matching bookings found.</Alert>
@@ -199,21 +186,16 @@ const MyBookings = () => {
     <Container className="my-5">
       <h2 className="text-center mb-4">📅 My Bookings</h2>
 
-      {/* 🔎 Filter Options */}
       <Row className="mb-4">
-        <Col md={6} className="mb-2">
-          <Form.Select
-            name="status"
-            value={filter.status}
-            onChange={handleFilterChange}
-          >
+        <Col md={6}>
+          <Form.Select name="status" value={filter.status} onChange={handleFilterChange}>
             <option value="">Filter by Status</option>
             <option value="Pending">⏳ Pending</option>
             <option value="Completed">✅ Completed</option>
             <option value="Cancelled">❌ Cancelled</option>
           </Form.Select>
         </Col>
-        <Col md={6} className="mb-2">
+        <Col md={6}>
           <InputGroup>
             <Form.Control
               type="text"
@@ -225,6 +207,7 @@ const MyBookings = () => {
             <Button
               variant="outline-secondary"
               onClick={() => setFilter({ status: "", search: "" })}
+              title="Clear filters"
             >
               Clear
             </Button>
@@ -232,25 +215,22 @@ const MyBookings = () => {
         </Col>
       </Row>
 
-      {/* ✅ Show Filtered Bookings */}
       <Row>
         {filteredBookings.map((booking) => (
           <Col md={6} lg={4} key={booking._id} className="mb-4">
-            <Card className="shadow-lg border-0 rounded-3 hover-effect">
+            <Card className="shadow-lg border-0 rounded-3">
               <Card.Body>
                 <h5 className="text-primary fw-bold">
                   {booking?.service?.title || "Service Name"}
                 </h5>
                 <p className="text-muted mb-1">
-                  <strong>Date:</strong>{" "}
-                  {new Date(booking.date).toLocaleDateString()}
+                  <strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}
                 </p>
                 <p className="text-muted mb-1">
                   <strong>Address:</strong> {booking.address || "Not provided"}
                 </p>
                 <p className="text-muted mb-1">
-                  <strong>Contact:</strong>{" "}
-                  {booking.contactNumber || "Not provided"}
+                  <strong>Contact:</strong> {booking.contactNumber || "Not provided"}
                 </p>
                 <p className="text-muted mb-1">
                   <strong>Status:</strong>{" "}
@@ -267,13 +247,13 @@ const MyBookings = () => {
                   </span>
                 </p>
 
-                {/* 💳 Pay Now Button for Pending Bookings */}
                 {booking.status === "Pending" && (
                   <Button
                     variant="success"
                     size="sm"
                     className="mt-2"
                     onClick={() => handlePayment(booking._id, booking.amount)}
+                    title="Pay and complete booking"
                   >
                     💳 Pay Now
                   </Button>
