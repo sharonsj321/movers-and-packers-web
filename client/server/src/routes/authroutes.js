@@ -5,6 +5,7 @@ const { signup, signin } = require("../controllers/authcontroller");
 router.post('/register',register)         //register cheyunnath controller vechanu, so auth controller create cheyuka
 router.post('/login',login)
 router.post("/logout",logout);
+router.post("/login", loginUser);
 
 
 router.post("/signup", signup);
